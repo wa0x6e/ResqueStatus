@@ -1,10 +1,10 @@
-<phpunit colors="true" bootstrap="test/bootstrap.php">
+<phpunit colors="true" bootstrap="tests/bootstrap.php">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
             <exclude>
                 <directory suffix=".php">./vendor/</directory>
-                <directory suffix=".php">./test</directory>
+                <directory suffix=".php">./tests</directory>
             </exclude>
         </whitelist>
     </filter>

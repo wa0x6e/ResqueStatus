@@ -1,0 +1,25 @@
+{
+    "name": "kamisama/resque-status",
+    "description": "A tool to save and restore a worker settings and status",
+    "keywords": ["php-resque", "worker", "status"],
+    "homepage": "http://github.com/kamisama/ResqueStatus",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wan Chen",
+            "email": "kami@kamisama.me",
+            "homepage": "http://www.kamisama.me",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {"ResqueStatus": "src/"}
+    },
+    "support": {
+        "email": "kami@kamisama.me",
+        "issues": "https://github.com/kamisama/ResqueStatus/issues",
+        "source": "https://github.com/kamisama/ResqueStatus"
+    }
+}
