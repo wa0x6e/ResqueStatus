@@ -20,11 +20,11 @@ before_script:
   - cd ../
   - rm -R phpredis-2.2.3/
   - composer self-update
-  - composer install --prefer-source --dev --colors
+  - composer install --prefer-source --dev
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-text tests
+  - phpunit --coverage-text --colors tests
 
 after_script:
   - php ./vendor/bin/coveralls -v
