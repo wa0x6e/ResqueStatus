@@ -17,6 +17,9 @@
     "autoload": {
         "psr-0": {"ResqueStatus": "src/"}
     },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
     "support": {
         "email": "kami@kamisama.me",
         "issues": "https://github.com/kamisama/ResqueStatus/issues",
