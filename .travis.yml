@@ -24,7 +24,7 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-text --colors tests
+  - phpunit --coverage-text tests
 
 after_script:
   - php ./vendor/bin/coveralls -v
