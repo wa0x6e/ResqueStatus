@@ -1,6 +1,6 @@
 {
     "name": "kamisama/resque-status",
-    "description": "A tool to save and restore a worker settings and status",
+    "description": "A API for saving a php-resque worker settings and status",
     "keywords": ["php-resque", "worker", "status"],
     "homepage": "http://github.com/kamisama/ResqueStatus",
     "type": "library",
