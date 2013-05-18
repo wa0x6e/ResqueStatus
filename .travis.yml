@@ -20,7 +20,7 @@ before_script:
   - cd ../
   - rm -R phpredis-2.2.3/
   - composer self-update
-  - composer install --prefer-source --dev
+  - composer install --prefer-source --dev --colors
 
 script:
   - mkdir -p build/logs
