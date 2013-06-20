@@ -91,7 +91,7 @@ class ResqueStatus
         $pids = $this->redis->hKeys(self::$workerKey);
         $schedulerPid = $this->redis->get(self::$schedulerWorkerKey);
 
-        if ($schedulerPid !== false) {
+        if ($schedulerPid !== false && is_array($pids)) {
             if (in_array($schedulerPid, $pids)) {
                 return true;
             }
