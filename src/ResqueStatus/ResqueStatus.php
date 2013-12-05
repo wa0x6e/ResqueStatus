@@ -80,6 +80,7 @@ class ResqueStatus
     public function isSchedulerWorker($worker)
     {
         list($host, $pid, $queue) = explode(':', (string)$worker);
+
         return $pid === $this->redis->get(self::$schedulerWorkerKey);
     }
 
@@ -123,12 +124,8 @@ class ResqueStatus
     public function getWorkers()
     {
         $workers = $this->redis->hGetAll(self::$workerKey);
-        $temp = array();
 
-        foreach ($workers as $name => $value) {
-            $temp[$name] = unserialize($value);
-        }
-        return $temp;
+        return array_map('unserialize', $workers);
     }
 
     /**
