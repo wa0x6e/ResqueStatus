@@ -34,7 +34,8 @@ class ResqueStatus
     public static $pausedWorkerKey = 'PausedWorker';
 
     /**
-     * Redis instance
+     * Redis instance.
+     *
      * @var Resqueredis|Redis
      */
     protected $redis = null;
@@ -45,11 +46,12 @@ class ResqueStatus
     }
 
     /**
-     * Save the workers arguments
+     * Save the worker's arguments.
      *
-     * Used when restarting the worker
+     * Used when restarting the worker.
      *
-     * @param  array $args Worker settings
+     * @param array $args Worker settings.
+     * @return boolean True if successfull, false otherwise.
      */
     public function addWorker($pid, $args)
     {
@@ -57,11 +59,11 @@ class ResqueStatus
     }
 
     /**
-     * Register a Scheduler Worker
+     * Register a Scheduler Worker.
      *
-     * @since   0.0.1
-     * @params  array   $workers    List of active workers
-     * @return  boolean             True if a Scheduler worker is found among the list of active workers
+     * @since 0.0.1
+     * @params array $workers List of active workers.
+     * @return boolean True if a Scheduler worker is found among the list of active workers.
      */
     public function registerSchedulerWorker($pid)
     {
@@ -69,11 +71,11 @@ class ResqueStatus
     }
 
     /**
-     * Test if a given worker is a scheduler worker
+     * Test if a given worker is a scheduler worker.
      *
-     * @since   0.0.1
-     * @param   Worker|string   $worker Worker to test
-     * @return  boolean                 True if the worker is a scheduler worker
+     * @since 0.0.1
+     * @param Worker|string $worker Worker to test.
+     * @return boolean True if the worker is a scheduler worker.
      */
     public function isSchedulerWorker($worker)
     {
@@ -82,9 +84,9 @@ class ResqueStatus
     }
 
     /**
-     * Check if the Scheduler Worker is already running
+     * Check if the Scheduler Worker is already running.
      *
-     * @return boolean        True if the scheduler worker is already running
+     * @return boolean True if the scheduler worker is already running.
      */
     public function isRunningSchedulerWorker()
     {
@@ -103,10 +105,10 @@ class ResqueStatus
     }
 
     /**
-     * Unregister a Scheduler Worker
+     * Unregister a Scheduler Worker.
      *
-     * @since  0.0.1
-     * @return boolean True if the scheduler worker existed and was successfully unregistered
+     * @since 0.0.1
+     * @return boolean True if the scheduler worker existed and was successfully unregistered.
      */
     public function unregisterSchedulerWorker()
     {
@@ -114,9 +116,9 @@ class ResqueStatus
     }
 
     /**
-     * Return all started workers arguments
+     * Return all started workers arguments.
      *
-     * @return array An array of settings, by worker
+     * @return array An array of settings, by worker.
      */
     public function getWorkers()
     {
@@ -130,7 +132,9 @@ class ResqueStatus
     }
 
     /**
+     * Remove a worker's saved arguments.
      *
+     * @return void
      */
     public function removeWorker($pid)
     {
@@ -138,7 +142,9 @@ class ResqueStatus
     }
 
     /**
-     * Clear all workers saved arguments
+     * Clear all workers saved arguments.
+     *
+     * @return void
      */
     public function clearWorkers()
     {
@@ -147,11 +153,12 @@ class ResqueStatus
     }
 
     /**
-     * Mark a worker as paused/active
+     * Mark a worker as paused/active.
      *
      * @since 0.0.1
-     * @param string    $workerName Name of the paused worker
-     * @param bool      $paused     Whether to mark the worker as paused or active
+     * @param string $workerName Name of the paused worker.
+     * @param boolean $paused Whether to mark the worker as paused or active.
+     * @return void
      */
     public function setPausedWorker($workerName, $paused = true)
     {
@@ -163,10 +170,10 @@ class ResqueStatus
     }
 
     /**
-     * Return a list of paused workers
+     * Return a list of paused workers.
      *
      * @since 0.0.1
-     * @return  array   An array of paused workers' name
+     * @return array An array of paused workers' name.
      */
     public function getPausedWorker()
     {
