@@ -27,10 +27,43 @@ namespace ResqueStatus;
 class ResqueStatus
 {
 
+   /**
+    * Active workers key.
+    *
+    * Used to store the started workers' runtime arguments (in a Redis hash).
+    *
+    * @var string
+    * @see ResqueStatus::addWorker()
+    * @see ResqueStatus::clearWorkers()
+    * @see ResqueStatus::getWorkers()
+    * @see ResqueStatus::isRunningSchedulerWorker()
+    * @see ResqueStatus::removeWorker()
+    */
     public static $workerKey = 'ResqueWorker';
 
+   /**
+    * Active scheduler worker key.
+    *
+    * Used to store the started scheduler worker PID (in a Redis string).
+    *
+    * @var string
+    * @see ResqueStatus::isSchedulerWorker()
+    * @see ResqueStatus::isRunningSchedulerWorker()
+    * @see ResqueStatus::registerSchedulerWorker()
+    * @see ResqueStatus::unregisterSchedulerWorker()
+    */
     public static $schedulerWorkerKey = 'ResqueSchedulerWorker';
 
+   /**
+    * Paused workers key.
+    *
+    * Used to store the paused workers' names (in a Redis set).
+    *
+    * @var string
+    * @see ResqueStatus::clearWorkers()
+    * @see ResqueStatus::getPausedWorker()
+    * @see ResqueStatus::setPausedWorker()
+    */
     public static $pausedWorkerKey = 'PausedWorker';
 
     /**
@@ -46,10 +79,11 @@ class ResqueStatus
     }
 
     /**
-     * Save the worker's arguments.
+     * Save a worker's runtime arguments.
      *
      * Used when restarting the worker.
      *
+     * @params int $pid Worker PID, e.g. 30677.
      * @param array $args Worker settings.
      * @return boolean True if successfull, false otherwise.
      */
@@ -62,7 +96,7 @@ class ResqueStatus
      * Register a Scheduler Worker.
      *
      * @since 0.0.1
-     * @params array $workers List of active workers.
+     * @params int $pid Worker PID, e.g. 30677.
      * @return boolean True if a Scheduler worker is found among the list of active workers.
      */
     public function registerSchedulerWorker($pid)
@@ -74,7 +108,7 @@ class ResqueStatus
      * Test if a given worker is a scheduler worker.
      *
      * @since 0.0.1
-     * @param Worker|string $worker Worker to test.
+     * @param Worker|string $worker Worker to test. If string it is the worker name, e.g. 'localhost:30677:default'.
      * @return boolean True if the worker is a scheduler worker.
      */
     public function isSchedulerWorker($worker)
@@ -117,9 +151,9 @@ class ResqueStatus
     }
 
     /**
-     * Return all started workers arguments.
+     * Return all started workers' runtime arguments.
      *
-     * @return array An array of settings, by worker.
+     * @return array An array of workers' runtime arguments.
      */
     public function getWorkers()
     {
@@ -129,8 +163,9 @@ class ResqueStatus
     }
 
     /**
-     * Remove a worker's saved arguments.
+     * Remove a worker's runtime arguments.
      *
+     * @params int $pid Worker PID, e.g. 30677.
      * @return void
      */
     public function removeWorker($pid)
@@ -139,7 +174,7 @@ class ResqueStatus
     }
 
     /**
-     * Clear all workers saved arguments.
+     * Clear all workers' runtime arguments.
      *
      * @return void
      */
@@ -153,7 +188,7 @@ class ResqueStatus
      * Mark a worker as paused/active.
      *
      * @since 0.0.1
-     * @param string $workerName Name of the paused worker.
+     * @param string $workerName Worker name, e.g. 'localhost:30677:default'.
      * @param boolean $paused Whether to mark the worker as paused or active.
      * @return void
      */
