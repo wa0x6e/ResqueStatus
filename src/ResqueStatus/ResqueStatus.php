@@ -113,7 +113,7 @@ class ResqueStatus
      */
     public function isSchedulerWorker($worker)
     {
-        list($host, $pid, $queue) = explode(':', (string)$worker);
+        list(, $pid, ) = explode(':', (string)$worker);
 
         return $pid === $this->redis->get(self::$schedulerWorkerKey);
     }
