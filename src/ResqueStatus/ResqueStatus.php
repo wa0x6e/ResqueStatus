@@ -159,6 +159,12 @@ class ResqueStatus
     {
         $workers = $this->redis->hGetAll(self::$workerKey);
 
+        $workers = array_filter($workers, function($v) {
+            if (false === is_numeric($v)) {
+                return $v;
+            }
+        });
+
         return array_map('unserialize', $workers);
     }
 
