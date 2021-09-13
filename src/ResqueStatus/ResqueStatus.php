@@ -89,7 +89,9 @@ class ResqueStatus
      */
     public function addWorker($pid, $args)
     {
-        return $this->redis->hSet(self::$workerKey, $pid, serialize($args)) !== false;
+        $hostname = $this->getHostname();
+        $key = "$hostname:$pid";
+        return $this->redis->hSet(self::$workerKey, $key, serialize($args)) !== false;
     }
 
     /**
@@ -101,7 +103,9 @@ class ResqueStatus
      */
     public function registerSchedulerWorker($pid)
     {
-        return $this->redis->set(self::$schedulerWorkerKey, $pid);
+        $hostname = $this->getHostname();
+        $key = "$hostname:$pid";
+        return $this->redis->set(self::$schedulerWorkerKey, $key);
     }
 
     /**
@@ -113,13 +117,15 @@ class ResqueStatus
      */
     public function isSchedulerWorker($worker)
     {
-        list(, $pid, ) = explode(':', (string)$worker);
-
-        return $pid === $this->redis->get(self::$schedulerWorkerKey);
+        list($host, $pid, ) = explode(':', (string)$worker);
+        $key = "$host:$pid";
+        return $key === $this->redis->get(self::$schedulerWorkerKey);
     }
 
     /**
      * Check if the Scheduler Worker is already running.
+     *
+     * Note: the scheduler only runs once, even across multiple hosts!
      *
      * @return boolean True if the scheduler worker is already running.
      */
@@ -158,8 +164,20 @@ class ResqueStatus
     public function getWorkers()
     {
         $workers = $this->redis->hGetAll(self::$workerKey);
+        $temp = array();
 
-        return array_map('unserialize', $workers);
+        $thisHostname = $this->getHostname();
+
+        foreach ($workers as $name => $value) {
+            [$host, $pid] = explode(':', $name);
+            if ($thisHostname !== $host) {
+                continue;
+            }
+
+            $temp[$pid] = unserialize($value);
+        }
+
+        return $temp;
     }
 
     /**
@@ -170,7 +188,9 @@ class ResqueStatus
      */
     public function removeWorker($pid)
     {
-        $this->redis->hDel(self::$workerKey, $pid);
+        $hostname = $this->getHostname();
+        $key = "$hostname:$pid";
+        $this->redis->hDel(self::$workerKey, $key);
     }
 
     /**
@@ -210,5 +230,19 @@ class ResqueStatus
     public function getPausedWorker()
     {
         return (array)$this->redis->smembers(self::$pausedWorkerKey);
+    }
+
+    /**
+     * Returns the current hostname as to filter out unrelated workers/processes.
+     *
+     * @return string
+     */
+    private function getHostname()
+    {
+        if (function_exists('gethostname')) {
+            return gethostname();
+        } else {
+            return php_uname('n');
+        }
     }
 }
